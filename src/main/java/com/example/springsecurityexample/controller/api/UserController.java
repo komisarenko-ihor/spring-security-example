@@ -1,15 +1,21 @@
 package com.example.springsecurityexample.controller.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @GetMapping
     public String getName() {
         return "User controller";
+    }
+
+    @GetMapping("/{value}")
+    public String getSomeValue(@PathVariable String value) {
+        return "User controller value: " + value;
     }
 }

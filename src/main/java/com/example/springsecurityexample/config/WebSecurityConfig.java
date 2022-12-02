@@ -1,6 +1,7 @@
 package com.example.springsecurityexample.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,6 +15,7 @@ public class WebSecurityConfig {
                 authorizeRequests(
                         authorize -> {
                             authorize.antMatchers("/").permitAll();
+                            authorize.antMatchers(HttpMethod.GET, "/api/user/*").permitAll();
                         }
                 )
                 .authorizeRequests()
