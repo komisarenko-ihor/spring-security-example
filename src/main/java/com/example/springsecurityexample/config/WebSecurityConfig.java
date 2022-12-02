@@ -14,8 +14,10 @@ public class WebSecurityConfig {
         return http.
                 authorizeRequests(
                         authorize -> {
-                            authorize.antMatchers("/").permitAll();
-                            authorize.antMatchers(HttpMethod.GET, "/api/user/*").permitAll();
+                            authorize
+                                    .antMatchers("/").permitAll()
+                                    .antMatchers(HttpMethod.GET, "/api/user/*").permitAll()
+                                    .mvcMatchers(HttpMethod.GET, "/api/user/upc/{upc}").permitAll();
                         }
                 )
                 .authorizeRequests()

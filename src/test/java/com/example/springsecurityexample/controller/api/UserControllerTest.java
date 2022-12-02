@@ -22,4 +22,10 @@ class UserControllerTest extends BaseIT {
         mockMvc.perform(get("/api/user").with(httpBasic("user1", "password1")))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void getSomeValueUPC() throws Exception {
+        mockMvc.perform(get("/api/user/upc/000"))
+                .andExpect(status().isOk());
+    }
 }

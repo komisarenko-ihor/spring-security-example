@@ -18,4 +18,9 @@ public class UserController {
     public String getSomeValue(@PathVariable String value) {
         return "User controller value: " + value;
     }
+
+    @GetMapping("/upc/{upc}")
+    public String getSomeUPCValue(@PathVariable String upc) {
+        return "User controller upcValue: " + upc;
+    }
 }
