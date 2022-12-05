@@ -6,9 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -16,7 +15,7 @@ public class WebSecurityConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -43,11 +42,11 @@ public class WebSecurityConfig {
     public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user1")
-                .password("$2a$10$.5EifMBQAw2C3u6ClHILJ.0VLl1VcmoPoprOe4TNG8VorxnFSkCce")
+                .password("{bcrypt}$2a$10$.5EifMBQAw2C3u6ClHILJ.0VLl1VcmoPoprOe4TNG8VorxnFSkCce")
                 .roles("ADMIN")
                 .and()
                 .withUser("user2")
-                .password("$2a$10$Lxu6dKcoGGxsTi.RuO6.Gev9XS.u.GqPGGR3VI738BtcBKTA18ppK")
+                .password("{sha256}67a789841117d6e16ccff0bced842e0ff18b3a78ec7f5c9c9ab0129360af9a56118d068072faadf6")
                 .roles("USER");
     }
 }
