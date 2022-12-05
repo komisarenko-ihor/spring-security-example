@@ -1,6 +1,7 @@
 package com.example.springsecurityexample.controller;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,25 @@ public class PasswordEncodingTests {
 
     static final String PASSWORD = "password1";
     static final String PASSWORD2 = "password2";
+
+    @Test
+    void bCryptConversionForSecurityConfig() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder();
+        System.out.println(bCrypt.encode(PASSWORD));
+        System.out.println(bCrypt.encode(PASSWORD2));
+    }
+
+    @Test
+    void BCrypt() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder();
+
+        String bCrypt1 = bCrypt.encode(PASSWORD);
+        String bCrypt2 = bCrypt.encode(PASSWORD);
+
+        assertNotEquals(bCrypt1, bCrypt2);
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt1));
+        assertTrue(bCrypt.matches(PASSWORD, bCrypt2));
+    }
 
     @Test
     void sha256ConversionForSecurityConfig() {
