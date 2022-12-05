@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.util.DigestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,12 +12,32 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PasswordEncodingTests {
 
     static final String PASSWORD = "password1";
+    static final String PASSWORD2 = "password2";
+
+    @Test
+    void sha256ConversionForSecurityConfig() {
+        PasswordEncoder sha256 = new StandardPasswordEncoder();
+        System.out.println(sha256.encode(PASSWORD));
+        System.out.println(sha256.encode(PASSWORD2));
+    }
+
+    @Test
+    void testSha256() {
+        PasswordEncoder sha256 = new StandardPasswordEncoder();
+
+        String sha256_1 = sha256.encode(PASSWORD);
+        String sha256_2 = sha256.encode(PASSWORD);
+
+        assertNotEquals(sha256_1, sha256_2);
+        assertTrue(sha256.matches(PASSWORD, sha256_1));
+        assertTrue(sha256.matches(PASSWORD, sha256_2));
+    }
 
     @Test
     void ldapConversionForSecurityConfig() {
         PasswordEncoder ldap = new LdapShaPasswordEncoder();
         System.out.println(ldap.encode(PASSWORD));
-        System.out.println(ldap.encode("password2"));
+        System.out.println(ldap.encode(PASSWORD2));
     }
 
     @Test
