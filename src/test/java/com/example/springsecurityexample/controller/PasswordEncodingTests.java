@@ -16,6 +16,24 @@ public class PasswordEncodingTests {
     static final String PASSWORD2 = "password2";
 
     @Test
+    void bCrypt15ConversionForSecurityConfig() {
+        PasswordEncoder bCrypt15 = new BCryptPasswordEncoder(15);
+        System.out.println(bCrypt15.encode("password3"));
+    }
+
+    @Test
+    void bCrypt15() {
+        PasswordEncoder bCrypt15 = new BCryptPasswordEncoder(15);
+
+        String bCrypt15_1 = bCrypt15.encode(PASSWORD);
+        String bCrypt15_2 = bCrypt15.encode(PASSWORD);
+
+        assertNotEquals(bCrypt15_1, bCrypt15_2);
+        assertTrue(bCrypt15.matches(PASSWORD, bCrypt15_1));
+        assertTrue(bCrypt15.matches(PASSWORD, bCrypt15_2));
+    }
+
+    @Test
     void bCryptConversionForSecurityConfig() {
         PasswordEncoder bCrypt = new BCryptPasswordEncoder();
         System.out.println(bCrypt.encode(PASSWORD));
@@ -23,7 +41,7 @@ public class PasswordEncodingTests {
     }
 
     @Test
-    void BCrypt() {
+    void bCrypt() {
         PasswordEncoder bCrypt = new BCryptPasswordEncoder();
 
         String bCrypt1 = bCrypt.encode(PASSWORD);

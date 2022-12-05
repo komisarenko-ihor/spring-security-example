@@ -41,4 +41,12 @@ public class IndexPageControllerIT extends BaseIT {
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("simple_model"));
     }
+
+    @Test
+    void getIndexPageWithHttpBasic3() throws Exception {
+        mockMvc.perform(get("/index").with(httpBasic("user3", "password3")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attributeExists("simple_model"));
+    }
 }
