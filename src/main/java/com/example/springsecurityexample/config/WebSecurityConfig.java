@@ -1,17 +1,31 @@
 package com.example.springsecurityexample.config;
 
 import com.example.springsecurityexample.security.CustomPasswordEncoderFactories;
+import com.example.springsecurityexample.security.RestHeaderAuthFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig {
+
+    AuthenticationManagerBuilder auth;
+
+    public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
+        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/user/**"));
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -21,8 +35,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-        return http.
-                authorizeRequests(
+//        http.addFilterBefore(restHeaderAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class);
+
+        return http
+                .addFilterBefore(restHeaderAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests(
                         authorize -> {
                             authorize
                                     .antMatchers("/").permitAll()
@@ -39,7 +56,7 @@ public class WebSecurityConfig {
     }
 
     @Autowired
-    public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
+    public void authenticationManager() throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user1")
                 .password("{bcrypt}$2a$10$.5EifMBQAw2C3u6ClHILJ.0VLl1VcmoPoprOe4TNG8VorxnFSkCce")
