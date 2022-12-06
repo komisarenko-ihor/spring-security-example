@@ -15,7 +15,7 @@ class UserControllerTest extends BaseIT {
     @Test
     void deleteSome() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .header("Api-Key", "apiKey").header("Api-Secret", "apiSecret"))
+                .header("Api-Key", "user1").header("Api-Secret", "password1"))
                 .andExpect(status().isOk());
     }
 

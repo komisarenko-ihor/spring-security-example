@@ -3,3 +3,7 @@
 #    user:
 #      name: user1
 #      password: password1
+
+logging:
+  level:
+    org.springframework.security: debug

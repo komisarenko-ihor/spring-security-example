@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     AuthenticationManagerBuilder auth;
 
     public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
-        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/user/**"));
+        RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
@@ -35,10 +35,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-//        http.addFilterBefore(restHeaderAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class);
-
         return http
                 .addFilterBefore(restHeaderAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable()
                 .authorizeRequests(
                         authorize -> {
                             authorize
