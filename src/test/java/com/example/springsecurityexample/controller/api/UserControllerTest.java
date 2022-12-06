@@ -5,11 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class UserControllerTest extends BaseIT {
+
+    @Test
+    void deleteSome() throws Exception {
+        mockMvc.perform(delete("/api/user/some")
+                .header("Api-Key", "apiKey").header("Api-Secret", "apiSecret"))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void getSomeValueWithNoAuth() throws Exception {
