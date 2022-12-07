@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter {
+public class RestParametersAuthFilter extends AbstractAuthenticationProcessingFilter {
 
-    public RestHeaderAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    public RestParametersAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
     }
 
@@ -38,15 +38,14 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
 
         try {
             Authentication authenticationResult = this.attemptAuthentication(request, response);
-
             if (authenticationResult != null) {
-                successfulAuthentication(request, response, chain, authenticationResult);
+                this.successfulAuthentication(request, response, chain, authenticationResult);
             } else {
                 chain.doFilter(req, res);
             }
         } catch (AuthenticationException e) {
             log.error("Authentication Failed", e);
-            unsuccessfulAuthentication(request, response, e);
+            this.unsuccessfulAuthentication(request, response, e);
         }
     }
 
@@ -55,30 +54,15 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
         String userName = getUserName(request);
         String password = getPassword(request);
 
-        log.debug("Authenticating User: " + userName);
-
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userName, password);
 
-        if (StringUtils.hasText(userName)) {
-            return this.getAuthenticationManager().authenticate(token);
-        } else {
-            return null;
-        }
+        return StringUtils.hasText(userName)
+                ? getAuthenticationManager().authenticate(token)
+                : null;
     }
 
     @Override
-    public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        SecurityContextHolder.clearContext();
-
-        this.logger.trace("Failed to process authentication request", failed);
-        this.logger.trace("Cleared SecurityContextHolder");
-        this.logger.trace("Handling authentication failure");
-
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-    }
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
@@ -87,11 +71,20 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
         }
     }
 
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        SecurityContextHolder.clearContext();
+        this.logger.trace("Failed to process authentication request", failed);
+        this.logger.trace("Cleared SecurityContextHolder");
+        this.logger.trace("Handling authentication failure");
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+    }
+
     private String getPassword(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader("Api-Secret")).orElse("");
+        return Optional.ofNullable(request.getParameter("Api-Secret")).orElse("");
     }
 
     private String getUserName(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader("Api-Key")).orElse("");
+        return Optional.ofNullable(request.getParameter("Api-Key")).orElse("");
     }
 }
