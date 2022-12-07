@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                 .roles("USER")
                 .and()
                 .withUser("user3")
-                .password("{bcrypt15}$2a$15$h3QdQBjL4eia3CiJ8dtnjuaXmsdU./1EPh/..4DZCc43IVy3ne2Wu")
+                .password("{bcrypt10}$2a$10$m62EAgvnyS3Dx/7fGls94.lGHlMPrQyEoq7mVs4fe7ckbCrX/8/4S")
                 .roles("USER");
     }
 }

@@ -1,5 +1,6 @@
 package com.example.springsecurityexample.controller;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
@@ -17,11 +18,12 @@ public class PasswordEncodingTests {
 
     @Test
     void bCrypt15ConversionForSecurityConfig() {
-        PasswordEncoder bCrypt15 = new BCryptPasswordEncoder(15);
-        System.out.println(bCrypt15.encode("password3"));
+        PasswordEncoder bCrypt10 = new BCryptPasswordEncoder(10);
+        System.out.println(bCrypt10.encode("password3"));
     }
 
     @Test
+    @Disabled("because too slow")
     void bCrypt15() {
         PasswordEncoder bCrypt15 = new BCryptPasswordEncoder(15);
 

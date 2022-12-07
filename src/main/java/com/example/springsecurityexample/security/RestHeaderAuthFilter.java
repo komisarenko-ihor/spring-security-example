@@ -2,6 +2,7 @@ package com.example.springsecurityexample.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.log.LogMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,13 +32,33 @@ public class RestHeaderAuthFilter extends AbstractAuthenticationProcessingFilter
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        Authentication authenticationResult = this.attemptAuthentication(request, response);
-
-        if (authenticationResult != null) {
-            this.successfulAuthentication(request, response, chain, authenticationResult);
-        } else {
-            chain.doFilter(req, res);
+        if (log.isDebugEnabled()) {
+            log.debug("Request is to process authentication");
         }
+
+        try {
+            Authentication authenticationResult = this.attemptAuthentication(request, response);
+
+            if (authenticationResult != null) {
+                successfulAuthentication(request, response, chain, authenticationResult);
+            } else {
+                chain.doFilter(req, res);
+            }
+        } catch (AuthenticationException e) {
+            log.error("Authentication Failed", e);
+            unsuccessfulAuthentication(request, response, e);
+        }
+    }
+
+    @Override
+    public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        SecurityContextHolder.clearContext();
+
+        this.logger.trace("Failed to process authentication request", failed);
+        this.logger.trace("Cleared SecurityContextHolder");
+        this.logger.trace("Handling authentication failure");
+
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 
     @Override

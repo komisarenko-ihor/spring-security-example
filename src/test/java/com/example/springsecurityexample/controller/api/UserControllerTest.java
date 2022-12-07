@@ -13,6 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends BaseIT {
 
     @Test
+    void deleteSomeBadCredentials() throws Exception {
+        mockMvc.perform(delete("/api/user/some")
+                .header("Api-Key", "user1").header("Api-Secret", "badPassword"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void deleteSome() throws Exception {
         mockMvc.perform(delete("/api/user/some")
                 .header("Api-Key", "user1").header("Api-Secret", "password1"))

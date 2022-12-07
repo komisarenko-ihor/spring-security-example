@@ -12,9 +12,9 @@ public class CustomPasswordEncoderFactories {
     }
 
     public static PasswordEncoder createDelegatingPasswordEncoder() {
-        String encodingId = "bcrypt15";
+        String encodingId = "bcrypt10";
         Map<String, PasswordEncoder> encoders = new HashMap();
-        encoders.put(encodingId, new BCryptPasswordEncoder(15));
+        encoders.put(encodingId, new BCryptPasswordEncoder(10));
         encoders.put("bcrypt", new BCryptPasswordEncoder());
         encoders.put("ldap", new LdapShaPasswordEncoder());
         encoders.put("MD5", new MessageDigestPasswordEncoder("MD5"));
