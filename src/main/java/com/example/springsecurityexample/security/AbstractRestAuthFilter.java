@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-abstract class AbstractRestAuthFilter extends AbstractAuthenticationProcessingFilter {
+public abstract class AbstractRestAuthFilter extends AbstractAuthenticationProcessingFilter {
 
     public AbstractRestAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);

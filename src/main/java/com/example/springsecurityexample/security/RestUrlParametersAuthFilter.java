@@ -7,19 +7,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Slf4j
-public class RestParametersAuthFilter extends AbstractRestAuthFilter {
+public class RestUrlParametersAuthFilter extends AbstractRestAuthFilter {
 
-    public RestParametersAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+    public RestUrlParametersAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
         super(requiresAuthenticationRequestMatcher);
     }
 
     @Override
     protected String getPassword(HttpServletRequest request) {
-        return Optional.ofNullable(request.getParameter("Api-Secret")).orElse("");
+        return Optional.ofNullable(request.getParameter("apiSecret")).orElse("");
     }
 
     @Override
     protected String getUserName(HttpServletRequest request) {
-        return Optional.ofNullable(request.getParameter("Api-Key")).orElse("");
+        return Optional.ofNullable(request.getParameter("apiKey")).orElse("");
     }
 }

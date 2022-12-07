@@ -13,9 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends BaseIT {
 
     @Test
-    void deleteSomeParameterBadCredentials() throws Exception {
+    void deleteSomeUrlParameterBadCredentials() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .param("Api-Key", "user1").param("Api-Secret", "badPassword"))
+                .param("apiKey", "user1").param("apiSecret", "badPassword"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -27,9 +27,9 @@ class UserControllerTest extends BaseIT {
     }
 
     @Test
-    void deleteSomeWithParameterCredentials() throws Exception {
+    void deleteSomeWithUrlParameterCredentials() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .param("Api-Key", "user1").param("Api-Secret", "password1"))
+                .param("apiKey", "user1").param("apiSecret", "password1"))
                 .andExpect(status().isOk());
     }
 

@@ -2,7 +2,7 @@ package com.example.springsecurityexample.config;
 
 import com.example.springsecurityexample.security.CustomPasswordEncoderFactories;
 import com.example.springsecurityexample.security.RestHeaderAuthFilter;
-import com.example.springsecurityexample.security.RestParametersAuthFilter;
+import com.example.springsecurityexample.security.RestUrlParametersAuthFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +28,8 @@ public class WebSecurityConfig {
         return filter;
     }
 
-    public RestParametersAuthFilter restParametersAuthFilter(AuthenticationManager authenticationManager) {
-        RestParametersAuthFilter filter = new RestParametersAuthFilter(new AntPathRequestMatcher("/api/**"));
+    public RestUrlParametersAuthFilter restUrlParametersAuthFilter(AuthenticationManager authenticationManager) {
+        RestUrlParametersAuthFilter filter = new RestUrlParametersAuthFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
@@ -44,7 +44,7 @@ public class WebSecurityConfig {
 
         return http
                 .addFilterBefore(restHeaderAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(restParametersAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(restUrlParametersAuthFilter(auth.getOrBuild()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeRequests(
                         authorize -> {
