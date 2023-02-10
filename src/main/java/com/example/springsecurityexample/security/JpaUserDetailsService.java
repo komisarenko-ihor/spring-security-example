@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,9 +37,9 @@ public class JpaUserDetailsService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Set<Authority> authorities) {
         return authorities != null && authorities.size() > 0
                 ? authorities.stream()
-                        .map(Authority::getRole)
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toSet())
+                .map(Authority::getRole)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet())
                 : new HashSet<>();
     }
 }
