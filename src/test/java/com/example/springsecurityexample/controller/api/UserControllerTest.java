@@ -13,31 +13,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends BaseIT {
 
     @Test
-    void deleteSomeUrlParameterBadCredentials() throws Exception {
-        mockMvc.perform(delete("/api/user/some")
-                .param("apiKey", "user1").param("apiSecret", "badPassword"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void deleteSomeHeaderBadCredentials() throws Exception {
-        mockMvc.perform(delete("/api/user/some")
-                .header("Api-Key", "user1").header("Api-Secret", "badPassword"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void deleteSomeWithUrlParameterCredentials() throws Exception {
-        mockMvc.perform(delete("/api/user/some")
-                .param("apiKey", "Admin1").param("apiSecret", "password1"))
+    void getCustomerWithCustomerRole() throws Exception {
+        mockMvc.perform(get("/api/customer/1")
+                .with(httpBasic("Customer1", "password3")))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void deleteSomeWithHeaderCredentials() throws Exception {
+    void getCustomerWithNotCustomerRole() throws Exception {
+        mockMvc.perform(get("/api/customer/1")
+                .with(httpBasic("Admin1", "password1")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getCustomerWithNoAuth() throws Exception {
+        mockMvc.perform(get("/api/customer/1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void deleteSomeWithAdminRole() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .header("Api-Key", "Admin1").header("Api-Secret", "password1"))
+                        .with(httpBasic("Admin1", "password1")))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteSomeWithUserRole() throws Exception {
+        mockMvc.perform(delete("/api/user/some")
+                        .with(httpBasic("User1", "password2")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deleteSomeWithCustomerRole() throws Exception {
+        mockMvc.perform(delete("/api/user/some")
+                        .with(httpBasic("Customer1", "password3")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deleteSomeWithNoAuth() throws Exception {
+        mockMvc.perform(delete("/api/user/some"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
