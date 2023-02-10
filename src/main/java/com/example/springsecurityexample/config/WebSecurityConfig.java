@@ -49,6 +49,7 @@ public class WebSecurityConfig {
                 .authorizeRequests(
                         authorize -> {
                             authorize
+                                    .antMatchers("/h2-console/**").permitAll() //do not use in production!
                                     .antMatchers("/").permitAll()
                                     .antMatchers(HttpMethod.GET, "/api/user/*").permitAll()
                                     .mvcMatchers(HttpMethod.GET, "/api/user/upc/{upc}").permitAll();
@@ -59,7 +60,15 @@ public class WebSecurityConfig {
                 .and()
                 .formLogin().and()
                 .httpBasic()
-                .and().build();
+                .and()
+
+                //h2 console config
+                .headers()
+                .frameOptions()
+                .sameOrigin().and()
+                //h2 console config
+
+                .build();
     }
 
     @Autowired
