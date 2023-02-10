@@ -29,14 +29,14 @@ class UserControllerTest extends BaseIT {
     @Test
     void deleteSomeWithUrlParameterCredentials() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .param("apiKey", "user1").param("apiSecret", "password1"))
+                .param("apiKey", "Admin1").param("apiSecret", "password1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteSomeWithHeaderCredentials() throws Exception {
         mockMvc.perform(delete("/api/user/some")
-                .header("Api-Key", "user1").header("Api-Secret", "password1"))
+                .header("Api-Key", "Admin1").header("Api-Secret", "password1"))
                 .andExpect(status().isOk());
     }
 
@@ -48,13 +48,13 @@ class UserControllerTest extends BaseIT {
 
     @Test
     void getSomeValueWithAuth() throws Exception {
-        mockMvc.perform(get("/api/user").with(httpBasic("user1", "password1")))
+        mockMvc.perform(get("/api/user").with(httpBasic("Admin1", "password1")))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getSomeValueWithAuth2() throws Exception {
-        mockMvc.perform(get("/api/user/some").with(httpBasic("user2", "password2")))
+        mockMvc.perform(get("/api/user/some").with(httpBasic("User1", "password2")))
                 .andExpect(status().isOk());
     }
 

@@ -28,7 +28,7 @@ public class IndexPageControllerIT extends BaseIT {
 
     @Test
     void getIndexPageWithHttpBasic() throws Exception {
-        mockMvc.perform(get("/index").with(httpBasic("user1", "password1")))
+        mockMvc.perform(get("/index").with(httpBasic("Admin1", "password1")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("simple_model"));
@@ -36,7 +36,7 @@ public class IndexPageControllerIT extends BaseIT {
 
     @Test
     void getIndexPageWithHttpBasic2() throws Exception {
-        mockMvc.perform(get("/index").with(httpBasic("user2", "password2")))
+        mockMvc.perform(get("/index").with(httpBasic("User1", "password2")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("simple_model"));
@@ -44,7 +44,7 @@ public class IndexPageControllerIT extends BaseIT {
 
     @Test
     void getIndexPageWithHttpBasic3() throws Exception {
-        mockMvc.perform(get("/index").with(httpBasic("user3", "password3")))
+        mockMvc.perform(get("/index").with(httpBasic("Customer1", "password3")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeExists("simple_model"));
