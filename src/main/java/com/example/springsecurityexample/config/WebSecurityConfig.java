@@ -4,7 +4,6 @@ import com.example.springsecurityexample.security.CustomPasswordEncoderFactories
 import com.example.springsecurityexample.security.RestHeaderAuthFilter;
 import com.example.springsecurityexample.security.RestUrlParametersAuthFilter;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,21 +68,5 @@ public class WebSecurityConfig {
                 //h2 console config
 
                 .build();
-    }
-
-    @Autowired
-    public void authenticationManager() throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1")
-                .password("{bcrypt}$2a$10$.5EifMBQAw2C3u6ClHILJ.0VLl1VcmoPoprOe4TNG8VorxnFSkCce")
-                .roles("ADMIN")
-                .and()
-                .withUser("user2")
-                .password("{sha256}67a789841117d6e16ccff0bced842e0ff18b3a78ec7f5c9c9ab0129360af9a56118d068072faadf6")
-                .roles("USER")
-                .and()
-                .withUser("user3")
-                .password("{bcrypt10}$2a$10$m62EAgvnyS3Dx/7fGls94.lGHlMPrQyEoq7mVs4fe7ckbCrX/8/4S")
-                .roles("USER");
     }
 }
