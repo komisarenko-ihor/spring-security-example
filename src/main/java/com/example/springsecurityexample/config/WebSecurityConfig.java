@@ -31,10 +31,9 @@ public class WebSecurityConfig {
                                     .antMatchers("/h2-console/**").permitAll() //do not use in production!
                                     .antMatchers("/").permitAll()
                                     .antMatchers(HttpMethod.GET, "/api/user/*").permitAll()
-                                    .mvcMatchers(HttpMethod.DELETE, "/api/user/{upc}").hasRole("ADMIN")
+                                    .mvcMatchers(HttpMethod.DELETE, "/api/user/{upc}").hasAuthority("user.delete")
                                     .mvcMatchers(HttpMethod.GET, "/api/user/upc/{upc}").permitAll()
-                                    .mvcMatchers(HttpMethod.GET, "/api/customer/{id}")
-                                        .hasAnyRole("ADMIN", "CUSTOMER");
+                                    .mvcMatchers(HttpMethod.GET, "/api/customer/{id}").hasAuthority("customer.read");
                         }
                 )
                 .authorizeRequests()

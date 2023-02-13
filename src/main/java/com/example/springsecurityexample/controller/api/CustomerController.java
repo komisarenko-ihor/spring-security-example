@@ -15,13 +15,13 @@ public class CustomerController {
         return "Customer controller";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('customer.read')")
     @GetMapping("/")
     public List<String> getCustomers() {
         return Collections.emptyList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('customer.create')")
     @PostMapping("/")
     public void postCustomer() {
         // creating customer

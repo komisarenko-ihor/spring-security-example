@@ -31,4 +31,12 @@ public class BaseIT {
                 Arguments.of("Admin1", "password1"),
                 Arguments.of("Admin2", "password12"));
     }
+
+    protected static Stream<Arguments> getReadBookCustomers() {
+        return Stream.of(
+                Arguments.of("Admin1", "password1"),
+                Arguments.of("Admin2", "password12"),
+                Arguments.of("Customer1", "password3")
+        );
+    }
 }
