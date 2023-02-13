@@ -29,6 +29,7 @@ public class UserDataLoader implements CommandLineRunner {
 
     private void loadSecurityData() {
         saveUser("Admin1", passwordEncoder.encode("password1"), saveAuthority("ROLE_ADMIN"));
+        saveUser("Admin2", passwordEncoder.encode("password12"), saveAuthority("ROLE_ADMIN"));
         saveUser("User1", passwordEncoder.encode("password2"), saveAuthority("ROLE_USER"));
         saveUser("Customer1", passwordEncoder.encode("password3"), saveAuthority("ROLE_CUSTOMER"));
     }
