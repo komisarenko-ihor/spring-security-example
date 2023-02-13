@@ -16,14 +16,14 @@ class UserControllerTest extends BaseIT {
     void getCustomerWithCustomerRole() throws Exception {
         mockMvc.perform(get("/api/customer/1")
                 .with(httpBasic("Customer1", "password3")))
-                .andExpect(status().isOk());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void getCustomerWithNotCustomerRole() throws Exception {
         mockMvc.perform(get("/api/customer/1")
                 .with(httpBasic("Admin1", "password1")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test

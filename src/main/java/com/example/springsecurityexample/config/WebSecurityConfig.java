@@ -31,7 +31,8 @@ public class WebSecurityConfig {
                                     .antMatchers(HttpMethod.GET, "/api/user/*").permitAll()
                                     .mvcMatchers(HttpMethod.DELETE, "/api/user/{upc}").hasRole("ADMIN")
                                     .mvcMatchers(HttpMethod.GET, "/api/user/upc/{upc}").permitAll()
-                                    .mvcMatchers(HttpMethod.GET, "/api/customer/{id}").hasRole("CUSTOMER");
+                                    .mvcMatchers(HttpMethod.GET, "/api/customer/{id}")
+                                        .hasAnyRole("ADMIN", "CUSTOMER");
                         }
                 )
                 .authorizeRequests()
