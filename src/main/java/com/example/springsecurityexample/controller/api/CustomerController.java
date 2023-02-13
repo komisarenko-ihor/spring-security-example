@@ -16,7 +16,7 @@ public class CustomerController {
         return "Customer controller";
     }
 
-    @Secured({"ROLE_ADMIN"})
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public List<String> getCustomers() {
         return Collections.emptyList();
