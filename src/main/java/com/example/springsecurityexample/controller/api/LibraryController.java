@@ -1,31 +1,34 @@
 package com.example.springsecurityexample.controller.api;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.springsecurityexample.security.annotations.permissions.LibraryCreatePermission;
+import com.example.springsecurityexample.security.annotations.permissions.LibraryDeletePermission;
+import com.example.springsecurityexample.security.annotations.permissions.LibraryReadPermission;
+import com.example.springsecurityexample.security.annotations.permissions.LibraryUpdatePermission;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/library")
 public class LibraryController {
 
-    @PreAuthorize("hasAuthority('library.create')")
+    @LibraryCreatePermission
     @PostMapping("/")
     public void addBook() {
         // adding book
     }
 
-    @PreAuthorize("hasAuthority('library.read')")
+    @LibraryReadPermission
     @GetMapping("/{id}")
     public String readBook() {
         return "Book";
     }
 
-    @PreAuthorize("hasAuthority('library.update')")
+    @LibraryUpdatePermission
     @PutMapping("/{id}")
     public String updateBook() {
         return "Updated book";
     }
 
-    @PreAuthorize("hasAuthority('library.delete')")
+    @LibraryDeletePermission
     @DeleteMapping("/{id}")
     public void deleteBook() {
         // deleting book
