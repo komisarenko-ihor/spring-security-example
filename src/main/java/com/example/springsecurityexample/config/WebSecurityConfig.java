@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @AllArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig {
 
     @Bean

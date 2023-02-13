@@ -1,10 +1,8 @@
 package com.example.springsecurityexample.controller.api;
 
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,5 +20,11 @@ public class CustomerController {
     @GetMapping("/")
     public List<String> getCustomers() {
         return Collections.emptyList();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/")
+    public void postCustomer() {
+        // creating customer
     }
 }

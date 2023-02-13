@@ -9,12 +9,37 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class UserControllerTest extends BaseIT {
+
+    @DisplayName("Method PreAuthorized")
+    @Nested
+    class PostCustomer {
+
+        @ParameterizedTest(name = "#{index} with [{arguments}]")
+        @MethodSource("com.example.springsecurityexample.controller.api.UserControllerTest#getAdminCustomer")
+        void postCustomerWithAuth(String user, String pwd) throws Exception {
+            mockMvc.perform(post("/api/customer/")
+                    .with(httpBasic(user, pwd)))
+                    .andExpect(status().is2xxSuccessful());
+        }
+
+        @Test
+        void postCustomerWithNoAuth() throws Exception {
+            mockMvc.perform(post("/api/customer/"))
+                    .andExpect(status().isUnauthorized());
+        }
+
+        @Test
+        void postCustomerWithWrongAuth() throws Exception {
+            mockMvc.perform(post("/api/customer/")
+                    .with(httpBasic("User1", "password2")))
+                    .andExpect(status().isForbidden());
+        }
+    }
 
     @DisplayName("Method Security")
     @Nested
