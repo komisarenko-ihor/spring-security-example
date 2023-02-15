@@ -1,5 +1,6 @@
 package com.example.springsecurityexample.domain;
 
+import com.example.springsecurityexample.domain.security.Order;
 import com.example.springsecurityexample.domain.security.User;
 import lombok.*;
 
@@ -26,4 +27,7 @@ public class Client {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> users;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Order> orders;
 }
