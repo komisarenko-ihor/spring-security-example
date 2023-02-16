@@ -8,6 +8,7 @@ logging:
   level:
     org.springframework.security: debug
     com.example.springsecurityexample: debug
+#    org.hibernate.type.descriptor.sql: trace
 
 spring:
   h2:
@@ -18,3 +19,7 @@ spring:
     url: jdbc:h2:mem:bootapp;DB_CLOSE_DELAY=-1
     username: sa
     password:
+#  jpa:
+#    properties:
+#      hibernate:
+#        show_sql: true
