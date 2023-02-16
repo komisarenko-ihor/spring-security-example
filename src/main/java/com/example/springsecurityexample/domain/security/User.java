@@ -33,7 +33,7 @@ public class User implements UserDetails, CredentialsContainer {
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<Role> roles;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Client client;
 
     @Transient

@@ -2,7 +2,7 @@ package com.example.springsecurityexample.bootstrap;
 
 import com.example.springsecurityexample.domain.Client;
 import com.example.springsecurityexample.domain.security.Authority;
-import com.example.springsecurityexample.domain.security.Order;
+import com.example.springsecurityexample.domain.Order;
 import com.example.springsecurityexample.domain.security.Role;
 import com.example.springsecurityexample.domain.security.User;
 import com.example.springsecurityexample.repositories.ClientRepository;
@@ -27,6 +27,14 @@ import java.util.UUID;
 @Component
 public class UserDataLoader implements CommandLineRunner {
 
+    public static final String CLIENT_1 = "ClientName1";
+    public static final String CLIENT_2 = "ClientName2";
+    public static final String CLIENT_3 = "ClientName3";
+
+    public static final String USER_1 = "UserName1";
+    public static final String USER_2 = "UserName2";
+    public static final String USER_3 = "UserName3";
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
@@ -47,13 +55,13 @@ public class UserDataLoader implements CommandLineRunner {
     private void loadClientData() {
         Role customerRole = roleRepository.findByName("CUSTOMER").orElseThrow();
 
-        Client client1 = saveClient("ClientName1");
-        Client client2 = saveClient("ClientName2");
-        Client client3 = saveClient("ClientName3");
+        Client client1 = saveClient(CLIENT_1);
+        Client client2 = saveClient(CLIENT_2);
+        Client client3 = saveClient(CLIENT_3);
 
-        saveUser("UserName1", "password1", customerRole, client1);
-        saveUser("UserName2", "password2", customerRole, client2);
-        saveUser("UserName3", "password3", customerRole, client3);
+        saveUser(USER_1, "password1", customerRole, client1);
+        saveUser(USER_2, "password2", customerRole, client2);
+        saveUser(USER_3, "password3", customerRole, client3);
 
         createOrder(client1);
         createOrder(client2);

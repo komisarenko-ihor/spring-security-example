@@ -1,12 +1,10 @@
 package com.example.springsecurityexample.domain;
 
-import com.example.springsecurityexample.domain.security.User;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -14,8 +12,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "clients")
-public class Client {
+@Entity(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -27,14 +25,6 @@ public class Client {
     @Column(length = 36, columnDefinition = "varchar", updatable = false, nullable = false )
     private UUID id;
 
-    private String name;
-
-    @Column(length = 36, columnDefinition = "varchar")
-    private UUID apiKey;
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> users;
-
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private Set<Order> orders;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Client client;
 }
