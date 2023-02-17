@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http
-                .csrf().disable()
+                .csrf().ignoringAntMatchers("/h2-console", "/api/**").and()
                 .authorizeRequests(
                         authorize -> {
                             authorize
