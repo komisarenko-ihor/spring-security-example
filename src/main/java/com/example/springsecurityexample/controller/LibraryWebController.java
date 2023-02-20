@@ -28,6 +28,12 @@ public class LibraryWebController {
 
         // save book to repository
 
-        return "redirect:/index";
+        return "redirect:/library/book";
+    }
+
+    @LibraryCreatePermission
+    @GetMapping("/book")
+    public String getBook() {
+        return "library/book";
     }
 }

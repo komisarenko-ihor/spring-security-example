@@ -28,6 +28,6 @@ public class LibraryWebControllerTest extends BaseIT {
                         .with(httpBasic("Admin1", "password1"))
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/index"));
+                .andExpect(view().name("redirect:/library/book"));
     }
 }
