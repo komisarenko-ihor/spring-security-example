@@ -51,11 +51,12 @@ public class WebSecurityConfig {
                             .loginProcessingUrl("/login")
                             .loginPage("/").permitAll()
                             .successForwardUrl("/")
-                            .defaultSuccessUrl("/");
+                            .defaultSuccessUrl("/")
+                            .failureUrl("/?error");
                 }).logout(logoutConfigurer -> {
                     logoutConfigurer
                             .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                            .logoutSuccessUrl("/")
+                            .logoutSuccessUrl("/?logout")
                             .permitAll();
                 })
                 .httpBasic()
