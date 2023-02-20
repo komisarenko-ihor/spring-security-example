@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Index page</title>
 </head>
 <body>
 
-<div class="row">
+<div sec:authorize="!isAuthenticated()" class="row">
     <div class="col-md-12">
 
         <p th:if="${loginError}" class="error">Wrong Username or password</p>
@@ -19,7 +20,14 @@
 
         </form>
     </div>
-
 </div>
+
+<div sec:authorize="isAuthenticated()" class="row">
+    <div class="col-md-12">
+        <p th:text="'Wellcome: ' + ${#authentication?.principal?.username}">User</p>
+        <p><a th:href="@{/logout}">Logout</a></p>
+    </div>
+</div>
+
 </body>
 </html>
