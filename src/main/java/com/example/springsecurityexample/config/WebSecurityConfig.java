@@ -2,20 +2,24 @@ package com.example.springsecurityexample.config;
 
 import com.example.springsecurityexample.security.CustomPasswordEncoderFactories;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@RequiredArgsConstructor
 @EnableWebSecurity
-@AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
+
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -32,6 +36,9 @@ public class WebSecurityConfig {
 
         return http
                 .csrf().ignoringAntMatchers("/h2-console", "/api/**").and()
+                // Remember-Me
+                .rememberMe().key("sfg-key").userDetailsService(userDetailsService).and()
+
                 .authorizeRequests(
                         authorize -> {
                             authorize
