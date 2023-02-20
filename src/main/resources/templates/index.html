@@ -36,5 +36,7 @@
     </div>
 </div>
 
+<a sec:authorize="hasAuthority('library.create')" class="btn btn-primary" th:href="@{/library/new}">Add Book</a>
+
 </body>
 </html>
