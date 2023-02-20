@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    private final PersistentTokenRepository persistentTokenRepository;
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -35,9 +37,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http
-                .csrf().ignoringAntMatchers("/h2-console", "/api/**").and()
-                // Remember-Me
-                .rememberMe().key("sfg-key").userDetailsService(userDetailsService).and()
+                .csrf().ignoringAntMatchers("/h2-console/**", "/api/**").and()
+
+                // Remember Me Simple Hash-Based Token
+//                .rememberMe().key("sfg-key").userDetailsService(userDetailsService).and()
+
+                // Remember Me Persistent Token
+                .rememberMe().tokenRepository(persistentTokenRepository).userDetailsService(userDetailsService).and()
 
                 .authorizeRequests(
                         authorize -> {
