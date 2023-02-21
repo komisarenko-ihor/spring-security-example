@@ -6,7 +6,7 @@
 
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: error
     com.example.springsecurityexample: debug
 #    org.hibernate.type.descriptor.sql: trace
 
