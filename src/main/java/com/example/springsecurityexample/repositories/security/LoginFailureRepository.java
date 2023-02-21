@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface LoginFailureRepository extends JpaRepository<LoginFailure, Integer> {
 
-    List<LoginFailure> findAllByUserAndCreatedDateIsAfter(User user, Timestamp date);
+    List<LoginFailure> findAllByUserAndCreatedDateIsAfter(User user, Timestamp timestamp);
 }

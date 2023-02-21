@@ -15,7 +15,7 @@
 
 <div sec:authorize="!isAuthenticated()" class="row">
     <div class="col-md-12">`
-        <!-- attribute SPRING_SECURITY_LAST_EXCEPTION from org.springframework.security.web.authenticationSimpleUrlAuthenticationFailureHandler !-->
+        <!-- attribute SPRING_SECURITY_LAST_EXCEPTION from org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler !-->
         <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']?.message} == 'User account is locked'" class="alert alert-danger">User Account is Locked</div>
         <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']?.message} == 'Bad credentials'" class="alert alert-danger">Invalid Username or Password</div>
         <div th:if="${param.logout}" class="alert alert-success">You Have Logged Out</div>

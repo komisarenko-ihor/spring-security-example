@@ -2,12 +2,15 @@ package com.example.springsecurityexample.domain.security;
 
 import com.example.springsecurityexample.domain.Client;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,13 @@ public class User implements UserDetails, CredentialsContainer {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
     }
+
+    @CreationTimestamp
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    @Column(updatable = false)
+    private Timestamp lastModifiedDate;
 
     @Override
     public void eraseCredentials() {
