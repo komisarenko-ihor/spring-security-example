@@ -15,23 +15,19 @@ public class AuthenticationSuccessListener {
     @EventListener
     public void listen(AuthenticationSuccessEvent event) {
 
-        log.debug("User Logged In: " + event.getAuthentication().getName());
+        log.debug("Login Success");
 
-        if (event.getSource() instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();
+        if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
 
-            if (token.getPrincipal() instanceof User) {
-                User user = (User) token.getPrincipal();
+            if (token.getPrincipal() instanceof User user) {
 
                 log.debug("User name logged in: " + user.getUsername());
             }
 
-            if (token.getDetails() instanceof WebAuthenticationDetails) {
-                WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
+            if (token.getDetails() instanceof WebAuthenticationDetails details) {
 
                 log.debug("Source IP: " + details.getRemoteAddress());
             }
         }
-
     }
 }
