@@ -1,6 +1,10 @@
 package com.example.springsecurityexample.security.listeners;
 
+import com.example.springsecurityexample.domain.security.LoginFailure;
 import com.example.springsecurityexample.domain.security.User;
+import com.example.springsecurityexample.repositories.security.LoginFailureRepository;
+import com.example.springsecurityexample.repositories.security.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,9 +12,15 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @Slf4j
 @Component
 public class AuthenticationFailureListener {
+
+    private final LoginFailureRepository loginFailureRepository;
+    private final UserRepository userRepository;
 
     @EventListener
     public void listener(AuthenticationFailureBadCredentialsEvent event) {
@@ -19,15 +29,27 @@ public class AuthenticationFailureListener {
 
         if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
 
-            if (token.getPrincipal() instanceof String user) {
+            LoginFailure.LoginFailureBuilder loginFailureBuilder = LoginFailure.builder();
 
-                log.debug("Attempted Username: " + user);
+            if (token.getPrincipal() instanceof String username) {
+
+                loginFailureBuilder.username(username);
+
+                log.debug("Attempted Username: " + username);
+
+                Optional<User> user = userRepository.findByUsername(username);
+                user.ifPresent(loginFailureBuilder::user);
             }
 
             if (token.getDetails() instanceof WebAuthenticationDetails details) {
 
+                loginFailureBuilder.sourceIp(details.getRemoteAddress());
+
                 log.debug("Source IP: " + details.getRemoteAddress());
             }
+
+            LoginFailure loginFailure = loginFailureRepository.save(loginFailureBuilder.build());
+            log.debug("Login Failure saved Id: " + loginFailure.getId());
         }
     }
 }
