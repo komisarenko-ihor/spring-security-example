@@ -38,7 +38,9 @@
     </div>
 </div>
 
+
 <a sec:authorize="hasAuthority('library.create')" class="btn btn-primary" th:href="@{/library/new}">Add Book</a>
+<a sec:authorize="isAuthenticated()" class="btn btn-primary" th:href="@{/user/register2fa}">Enable 2FA</a>
 
 </body>
 </html>

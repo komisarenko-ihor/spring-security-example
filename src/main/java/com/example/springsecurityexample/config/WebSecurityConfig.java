@@ -1,6 +1,7 @@
 package com.example.springsecurityexample.config;
 
 import com.example.springsecurityexample.security.CustomPasswordEncoderFactories;
+import com.example.springsecurityexample.security.google.Google2FaFilter;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final PersistentTokenRepository persistentTokenRepository;
+    private final Google2FaFilter google2FaFilter;
 
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -37,6 +40,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http
+
+                .addFilterBefore(google2FaFilter, SessionManagementFilter.class)
+
                 .csrf().ignoringAntMatchers("/h2-console/**", "/api/**").and()
 
                 // Remember Me Simple Hash-Based Token
