@@ -49,7 +49,7 @@ public class UserWebController {
 
         if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
             User saverUser = userRepository.findById(user.getId()).orElseThrow();
-            saverUser.setUserGoogle2Fa(true);
+            saverUser.setUseGoogle2Fa(true);
             userRepository.save(saverUser);
 
             page = "index";
@@ -73,7 +73,7 @@ public class UserWebController {
         String page;
 
         if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
-            ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).setUserGoogle2Fa(false);
+            ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).setUseGoogle2Fa(false);
             page = "index";
         } else {
             page = "user/verify2fa";
