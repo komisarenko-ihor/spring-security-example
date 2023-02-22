@@ -26,7 +26,7 @@ public class UserWebController {
     @GetMapping("/register2fa")
     public String register2fa(Model model) {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = getUser();
 
         String url = GoogleAuthenticatorQRGenerator.getOtpAuthURL("SpringSecurityExample", user.getUsername(),
                 googleAuthenticator.createCredentials(user.getUsername()));
@@ -41,8 +41,26 @@ public class UserWebController {
     @PostMapping("/register2fa")
     public String confirm2fa(@RequestParam Integer verifyCode) {
 
-        //TODO: need to implement
+        User user = getUser();
 
-        return "index";
+        log.debug("Entered Code is: " + verifyCode);
+
+        String page;
+
+        if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
+            User saverUser = userRepository.findById(user.getId()).orElseThrow();
+            saverUser.setUserGoogle2Fa(true);
+            userRepository.save(saverUser);
+
+            page = "index";
+        } else {
+            page = "user/register2fa";
+        }
+
+        return page;
+    }
+
+    private User getUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
