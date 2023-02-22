@@ -60,6 +60,28 @@ public class UserWebController {
         return page;
     }
 
+    @GetMapping("/verify2fa")
+    public String verify2fa() {
+        return "user/verify2fa";
+    }
+
+    @PostMapping("/verify2fa")
+    public String verifyPost2fa(@RequestParam Integer verifyCode) {
+
+        User user = getUser();
+
+        String page;
+
+        if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
+            ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).setUserGoogle2Fa(false);
+            page = "index";
+        } else {
+            page = "user/verify2fa";
+        }
+
+        return page;
+    }
+
     private User getUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
