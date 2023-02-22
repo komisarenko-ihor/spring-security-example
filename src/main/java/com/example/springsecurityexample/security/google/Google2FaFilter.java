@@ -20,10 +20,10 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class Google2FaFilter extends GenericFilterBean {
 
     private final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+    private final Google2FaFailureHandler google2FaFailureHandler = new Google2FaFailureHandler();
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -40,7 +40,7 @@ public class Google2FaFilter extends GenericFilterBean {
                 if (user.getUseGoogle2Fa() && user.getGoogle2FaRequired()) {
                     log.debug("2FA Required");
 
-                    //TODO: Failure handler
+                    google2FaFailureHandler.onAuthenticationFailure(request, response, null);
                 }
             }
         }
