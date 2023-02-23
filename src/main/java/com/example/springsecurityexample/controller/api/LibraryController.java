@@ -16,12 +16,14 @@ public class LibraryController {
         // adding book
     }
 
+    @CrossOrigin
     @LibraryReadPermission
     @GetMapping("/{id}")
     public String readBook() {
         return "Book";
     }
 
+    @CrossOrigin
     @LibraryUpdatePermission
     @PutMapping("/{id}")
     public String updateBook() {

@@ -41,6 +41,8 @@ public class WebSecurityConfig {
 
         return http
 
+                .cors().and()
+
                 .addFilterBefore(google2FaFilter, SessionManagementFilter.class)
 
                 .csrf().ignoringAntMatchers("/h2-console/**", "/api/**").and()
